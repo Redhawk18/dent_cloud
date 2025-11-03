@@ -1,7 +1,6 @@
-use std::collections::{BTreeMap, HashMap};
-
 use chrono::{Month, NaiveDateTime};
 use serde::{Deserialize, Deserializer, Serialize};
+use std::collections::{BTreeMap, HashMap};
 
 use crate::{Result, Session};
 
@@ -15,9 +14,6 @@ pub struct Parameters {
     pub meter: String,
 }
 
-// TODO make DataRaw and then manually remove both date and time from the vec
-// then use the shared logic to have a vec of keys
-
 #[derive(Debug, Clone, Default, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Data {
@@ -27,6 +23,7 @@ pub struct Data {
     pub topics: Vec<Topic>,
 }
 
+/// Keys based on the headers field list.
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum Key {
@@ -153,6 +150,7 @@ impl<'de> Deserialize<'de> for Topic {
     }
 }
 
+/// Get all data from the time range speficed.
 pub async fn data(session: Session, parameters: Parameters) -> Result<Data> {
     let topics = format!("[ {} ]", parameters.topics.join(", "));
     let mut query_parameters = vec![
@@ -175,8 +173,6 @@ pub async fn data(session: Session, parameters: Parameters) -> Result<Data> {
 
 fn raw_key_to_key(raw_key: String) -> Option<Key> {
     let divided = raw_key.split("/").collect::<Vec<&str>>();
-
-    // dbg!("{}", &divided);
 
     let field = divided.get(0)?.to_string();
     let sub_field = divided.get(1)?.to_string();
