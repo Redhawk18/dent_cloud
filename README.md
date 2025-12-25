@@ -15,6 +15,12 @@ async fn get_dent_meters(api_key: String, key_id: String) {
 }
 ```
 
+## Installation
+
+```
+cargo add dent_cloud
+```
+
 ### Resources
 [Reference the data sheet](https://www.dentinstruments.com/wp-content/uploads/DENTCloudV1.2_Datasheet_07252024-Final.pdf)
 
