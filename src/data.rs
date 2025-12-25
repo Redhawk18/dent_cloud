@@ -34,6 +34,15 @@ pub enum Key {
     DisplacementPowerFactorElement(String),
 }
 
+impl Data {
+    pub const fn is_empty(&self) -> bool {
+        if self.headers.is_empty() && self.topics.is_empty() {
+            return true;
+        }
+        false
+    }
+}
+
 impl<'de> Deserialize<'de> for Data {
     fn deserialize<D>(deserializer: D) -> std::result::Result<Self, D::Error>
     where
@@ -100,8 +109,6 @@ impl<'de> Deserialize<'de> for Topic {
         }
 
         let flat = FlatTopic::deserialize(deserializer)?;
-        dbg!("{}", &flat);
-
         let time = NaiveDateTime::parse_from_str(
             &format!("{} {}", flat.date, flat.time),
             "%Y-%m-%d %H:%M",
@@ -151,7 +158,7 @@ impl<'de> Deserialize<'de> for Topic {
 }
 
 /// Get all data from the time range speficed.
-pub async fn data(session: Session, parameters: Parameters) -> Result<Data> {
+pub async fn data(session: &Session, parameters: Parameters) -> Result<Data> {
     let topics = format!("[ {} ]", parameters.topics.join(", "));
     let mut query_parameters = vec![
         ("request", "getData".to_string()),

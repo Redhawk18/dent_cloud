@@ -18,7 +18,7 @@ pub type Meter = String;
 /// ```json
 /// {"success":true,"meters":["P482311252","P482102272","P482102270"]}
 /// ```
-pub async fn meters(session: Session) -> Result<Meters> {
+pub async fn meters(session: &Session) -> Result<Meters> {
     trace!("Sending meter request",);
     session.send(&[("request", "getMeters")]).await
 }

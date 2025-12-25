@@ -27,19 +27,27 @@
         system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
+          lib = pkgs.lib;
         in
         {
           default = devenv.lib.mkShell {
             inherit inputs pkgs;
             modules = [
               {
+                dotenv.enable = true;
+                languages.rust = {
+                  enable = true;
+                  mold.enable = true;
+                };
+
                 # https://devenv.sh/reference/options/
-                languages.rust.enable = true;
                 packages = with pkgs; [ openssl ];
 
-                enterShell = '''';
+                env = {
+                  LD_LIBRARY_PATH = lib.makeLibraryPath (with pkgs; [ ]);
+                  RUST_LOG = "info";
+                };
 
-                # processes.hello.exec = "hello";
               }
             ];
           };

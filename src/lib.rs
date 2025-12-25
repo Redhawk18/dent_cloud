@@ -80,7 +80,6 @@ impl Session {
         debug!("Sending request to DentCloud.");
         let response = request.send().await?.error_for_status()?;
         let text = &response.text().await?;
-        dbg!("text {}", text);
 
         trace!("Decoding response text.");
         match serde_json::from_str::<U>(text) {

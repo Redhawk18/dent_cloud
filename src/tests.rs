@@ -24,7 +24,7 @@ async fn meter() {
     let (api, id) = get_api_and_id();
 
     let session = Session::new(api, id);
-    let result = meters::meters(session).await;
+    let result = meters::meters(&session).await;
 
     dbg!("{}", &result);
     assert!(result.is_ok())
@@ -35,7 +35,7 @@ async fn topics() {
     let (api, id) = get_api_and_id();
 
     let session = Session::new(api, id);
-    let result = topics::topics(session).await;
+    let result = topics::topics(&session).await;
 
     dbg!("{}", &result);
     assert!(result.is_ok())
@@ -70,7 +70,7 @@ async fn data() {
         ],
         meter,
     };
-    let result = data::data(session, params).await;
+    let result = data::data(&session, params).await;
 
     dbg!("{}", &result);
     assert!(result.is_ok())

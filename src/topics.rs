@@ -61,7 +61,7 @@ pub struct Topic {
 ///    ]
 /// }
 /// ```
-pub async fn topics(session: Session) -> Result<Topics> {
+pub async fn topics(session: &Session) -> Result<Topics> {
     trace!("Sending topics request",);
     session.send(&[("request", "getTopics")]).await
 }
