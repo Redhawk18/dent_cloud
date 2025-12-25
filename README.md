@@ -1,4 +1,4 @@
-# Tenor
+# DentCloud
 
 A Rust crate for dent instruments' v1 dentcloud API. With rate limiting and verbose error handling. 
 
